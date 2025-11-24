@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartShop - متجرك الذكي</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+        }
+        
+        body { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header h1 {
+            color: #6366F1;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .ai-banner {
+            background: linear-gradient(45deg, #6366F1, #8B5CF6);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .product-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: #6366F1;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .product-card h3 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .price {
+            color: #10B981;
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .description {
+            color: #555;
+            line-height: 1.6;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .features {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            color: #666;
+        }
+        
+        .features li:before {
+            content: "✅ ";
+            margin-left: 10px;
+        }
+        
+        .buy-btn {
+            background: linear-gradient(45deg, #10B981, #059669);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        .buy-btn:hover {
+            background: linear-gradient(45deg, #059669, #10B981);
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+        
+        .recommendation-badge {
+            background: #FF6B6B;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: white;
+            padding: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- الهيدر الرئيسي -->
+        <div class="header">
+            <h1>🛍️ SmartShop</h1>
+            <p>متجرك الذكي الذي يتعلم منك - ذكاء اصطناعي في خدمتك</p>
+        </div>
+
+        <!-- بانر الذكاء الاصطناعي -->
+        <div class="ai-banner">
+            <h2>🎯 نظام توصيات ذكي</h2>
+            <p>نحن نراقب اهتماماتك ونوصي لك بالمنتجات المناسبة</p>
+        </div>
+
+        <!-- شبكة المنتجات -->
+        <div class="products-grid" id="productsContainer">
+            <!-- المنتجات تُضاف تلقائياً بالجافاسكريبت -->
+        </div>
+
+        <!-- الفوتر -->
+        <div class="footer">
+            <p>© 2024 SmartShop - كل الحقوق محفوظة</p>
+            <p>📧 للاستفسارات: info@smartshop.com</p>
+        </div>
+    </div>
+
+    <script>
+        // بيانات المنتجات مع روابط PayPal
+        const products = [
+            {
+                id: 1,
+                name: "كورس الذكاء الاصطناعي للتجارة الإلكترونية",
+                price: 499,
+                description: "دليلك الشامل لبناء متجر ذكي باستخدام الذكاء الاصطناعي - من الصفر إلى الاحتراف",
+                features: [
+                    "شهادة إتمام معتمدة",
+                    "دعم فني مباشر",
+                    "مشاريع عملية حقيقية", 
+                    "الوصول الدائم للمحتوى",
+                    "تحديثات مجانية مستمرة"
+                ],
+                paymentLink: "https://paypal.com/your-course-link",
+                recommended: true
+            },
+            {
+                id: 2,
+                name: "حزمة أدوات الذكاء الاصطناعي للتسويق",
+                price: 299,
+                description: "مجموعة أدوات جاهزة لتحويل متجرك العادي إلى متجر ذكي يتنبأ برغبات عملائك",
+                features: [
+                    "نظام توصيات منتجات ذكي",
+                    "أداة تحليل مشاعر العملاء", 
+                    "مولد محتوى آلي متكامل",
+                    "أدوات تتبع سلوك الزوار",
+                    "قوالب جاهزة وسهلة التطبيق"
+                ],
+                paymentLink: "https://paypal.com/your-tools-link",
+                recommended: false
+            },
+            {
+                id: 3,
+                name: "جلسة استشارية ذكاء اصطناعي مخصصة",
+                price: 199,
+                description: "جلسة استشارية فردية 1-1 لتحليل متجرك الحالي وتطبيق الذكاء الاصطناعي خطوة بخطوة",
+                features: [
+                    "جلسة مباشرة 60 دقيقة",
+                    "تقرير تحليل مفصل", 
+                    "خطة عمل مخصصة",
+                    "متابعة أسبوعية لمدة شهر",
+                    "توصيات أدوات مناسبة لميزانيتك"
+                ],
+                paymentLink: "https://paypal.com/your-consultation-link",
+                recommended: true
+            }
+        ];
+
+        // عرض المنتجات في الصفحة
+        function displayProducts() {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = ''; // تنظيف المحتوى القديم
+            
+            products.forEach(product => {
+                const productHTML = `
+                    <div class="product-card" style="position: relative;">
+                        ${product.recommended ? '<div class="recommendation-badge">⭐ الأكثر طلباً</div>' : ''}
+                        <h3>${product.name}</h3>
+                        <div class="price">${product.price} ريال</div>
+                        <div class="description">${product.description}</div>
+                        <ul class="features">
+                            ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                        </ul>
+                        <button class="buy-btn" onclick="handlePurchase(${product.id})">
+                            🛒 اشتري الآن - ${product.price} ريال
+                        </button>
+                    </div>
+                `;
+                container.innerHTML += productHTML;
+            });
+        }
+
+        // معالجة عملية الشراء
+        function handlePurchase(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product && product.paymentLink) {
+                // تحليلات الذكاء الاصطناعي
+                trackCustomerBehavior(productId);
+                
+                // فتح صفحة الدفع
+                window.open(product.paymentLink, '_blank');
+                
+                // رسالة تأكيد
+                showPurchaseMessage(product.name);
+            } else {
+                alert('⚠️ المنتج غير متاح حالياً. يرجى المحاولة لاحقاً.');
+            }
+        }
+
+        // تتبع سلوك العميل (ذكاء اصطناعي بسيط)
+        function trackCustomerBehavior(productId) {
+            const customerData = {
+                productId: productId,
+                timestamp: new Date().toISOString(),
+                viewedProducts: JSON.parse(localStorage.getItem('viewedProducts') || '[]'),
+                purchaseHistory: JSON.parse(localStorage.getItem('purchaseHistory') || '[]')
+            };
+            
+            // حفظ في localStorage
+            customerData.purchaseHistory.push(productId);
+            localStorage.setItem('purchaseHistory', JSON.stringify(customerData.purchaseHistory));
+            
+            console.log('📊 تحليل سلوك العميل:', customerData);
+        }
+
+        // عرض رسالة تأكيد الشراء
+        function showPurchaseMessage(productName) {
+            alert(`🎉 شكراً لشرائك: ${productName}\n\n✅ سيصلك رابط المنتج على بريدك الإلكتروني خلال دقائق.`);
+        }
+
+        // تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            displayProducts();
+            console.log('🛍️ SmartShop يعمل بنجاح!');
+        });
+    </script>
+</body>
+</html>
